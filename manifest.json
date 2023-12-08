@@ -2,7 +2,7 @@
   "name": "figma-classify",
   "id": "1314693808615895175",
   "api": "1.0.0",
-  "main": "main.js",
+  "main": "dist/main.js",
   "enableProposedApi": false,
   "editorType": [
     "figma",

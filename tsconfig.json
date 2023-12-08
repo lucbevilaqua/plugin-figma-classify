@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
     "target": "ES2016",
     "lib": [
       "ES2016"
@@ -9,5 +11,8 @@
       "./node_modules/@types",
       "./node_modules/@figma"
     ]
-  }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }

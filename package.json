@@ -2,7 +2,7 @@
   "name": "figma-classify",
   "version": "1.0.0",
   "description": "Plugin que gera tag html e nomes de classes de acordo com o padrao de ids",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch": "npm run build -- --watch"

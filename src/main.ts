@@ -1,12 +1,4 @@
-type GeneratorCodeProps = {
-  prefix: string;
-  componentProps: { [key: string]: string | boolean };
-  componentName: string;
-};
-
-type MappingToProps = { [key: string]: (key: string, value: string | boolean) => string }
-type MappingSpacings = { [key: string]: string }
-
+const prefix = 'ds'
 // Listerners
 figma.codegen.on("generate", () => handleGenerateCodeSession());
 
@@ -60,7 +52,7 @@ const mappingSpacing: MappingSpacings = {
 };
 
 const buildCssClassName = (): string | null => {
-  const { prefix, componentProps, componentName } = getComponentProperties() ?? {}
+  const { componentProps, componentName } = getComponentProperties() ?? {}
   let cssClassName = prefix ? `${prefix}-${componentName}` : `${componentName}`;
 
   
@@ -85,7 +77,6 @@ const buildFrameClassName = (): string | null => {
   if (selection.length === 0 || selection[0].type !== 'FRAME') {
     return null;
   }
-  const prefix = 'ids'
   const instance = selection[0];
   const itemSpacing = instance.itemSpacing ?? 0;
   const frameName = instance.name;
@@ -97,7 +88,7 @@ const buildFrameClassName = (): string | null => {
 }
 
 const buildHtmlTag = (): string | null => {
-  const { prefix, componentProps, componentName } = getComponentProperties() ?? {}
+  const { componentProps, componentName } = getComponentProperties() ?? {}
   const tagName = prefix ? `${prefix}-${componentName}` : componentName;
   let attributes = '';
 
@@ -126,6 +117,6 @@ const getComponentProperties = (): GeneratorCodeProps | null => {
   const componentProps = instance.variantProperties ?? {};
   const componentName = instance.name;
 
-  return { prefix: 'ids', componentProps, componentName}
+  return { componentProps, componentName}
 }
 
