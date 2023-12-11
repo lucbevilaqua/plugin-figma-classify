@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
+    "moduleResolution": "node",
     "target": "ES2016",
     "lib": [
       "ES2016"
     ],
     "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "design-system.ts",
   ]
 }
