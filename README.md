@@ -1,38 +1,57 @@
 # Figma Classify
-  as) e para os Frame que utilizam auto-layout o plugin gera uma class "spacing-p-${x}" (onde X é uma variavel relacionando px com rem).
+Elevate your Figma designs to operational excellence with the Figma CodeGen Plugin. This innovative tool is essential for automating the generation of HTML tags, CSS classes, and instance directives from your Figma instances. Designed to bridge the gap between design and development, it ensures a smooth transition of your visual components into executable code.
 
-**Atenção:** O plugin está utilizando a nomenclatura de programação Kebab case poís é a mais indica para web components de qualquer design-system.
+Customizable UI for Precise Code Generation The plugin boasts a user-friendly interface with two main screens:
 
-## Estrutura de Pastas
+General Settings: Set a prefix for your code and establish a mask for properties, CSS class names, and directives that apply across all components. The mask uses placeholders, replaced by actual values from your design tokens. For instance, a logo component with a direction property mapped as 'is-$value' in normal Figma mode will generate in developer mode for an instance with the direction set to vertical. Component-Specific Customization: Tailor individual components with the same personalizations, ensuring each component’s unique requirements are met. File-Level Configuration for Unified Collaboration Configurations are saved at the file level, guaranteeing consistent code generation for anyone accessing the file. This fosters teamwork and consistency, allowing designers and developers to collaborate effectively.
 
-- **main.ts**: Aqui é onde nossa aplicação conversa com a API do figma.
-- **manifest**: Arquivo que importamos para o figma com nossa configuração.
+Ideal for Web Component Design Systems The Figma CodeGen Plugin is commonly used for projects featuring design systems composed of web components. It allows you to map Figma components to the code of the created web components seamlessly. However, its versatility means it can be employed for any purpose within the realm of possibility, adapting to various project needs.
 
-## Instalação
-Antes de iniciar o projeto, certifique-se de ter o [Node.js](https://nodejs.org/) ou [yarn](https://yarnpkg.com/) e o [Figma Desktop](https://www.figma.com/downloads/) instalados no seu sistema.
+Embrace the Figma CodeGen Plugin for an integrated design-development workflow, ensuring your design system is perfectly translated into web component code.
 
-Para instalar as dependências do projeto, execute o seguinte comando no terminal na raiz do projeto:
+https://github.com/lucbevilaqua/plugin-figma-classify/assets/77061281/f4dba4f5-1e3f-4937-8fa9-0137763540c1
+
+## Folder Structure
+```
+├───dist
+├───src
+│   ├───handlers
+│   ├───ui
+│   │   ├───components
+│   │   ├───containers
+│   │   └───hooks
+│   └───utils
+└───types
+```
+- **types/***: Contains all types used in our application.
+- **dist/**: Contains the entire plugin built for javascript
+- **src/***: All plugin files that will be built to the /dist folder.
+- **handlers/***: Files that are called solely by main.ts, which normally deal with the logic part of the plugin.
+- **ui/***: React application for creating the UI of our plugin in normal figma mode.
+- **components/***: All generic components and sole responsibility.
+- **containers/***: Containers are components that call one or more components and that usually have more than one responsibility.
+
+## Install
+
+Before starting the project, make sure you have [Node.js](https://nodejs.org/),  [yarn](https://yarnpkg.com/), and [Figma Desktop](https://www.figma.com/downloads/) installed on your system.
+
+To install the project dependencies, run the following command in the terminal at the project root:
 
 ```bash
   npm install
 ```
     
-## Como rodar o projeto
+## How to run the project
 
-Voce pode consultar mais detalhadamente na documentação oficial [plugin-quickstart-guide](https://www.figma.com/plugin-docs/plugin-quickstart-guide/)
+You can find more detailed information in the official documentation [plugin-quickstart-guide](https://www.figma.com/plugin-docs/plugin-quickstart-guide/)
 
-**Siga os passos abaixo para rodar o plugin no figma**:
-1. Rode o seguinte comando em seu terminal do projeto ```bash npm run watch```
-2. No seu projeto do figma clique em plugins -> manage plugins...
-2. Na sessão de plugins altere o seletor para mostrar os plugins do modo development
-3. Clique no botao "Novo" ou "+" para adicionar um novo plugin e em seguida selecione a opcao "import plugin from manifest..."
-4. Navegue até a pasta do projeto e selecione o arquivo manifest
-5. Agora só ativar o modo DEV do figma e olhar no sidebar direito até a sessão "Code" (imagem abaixo).
-6. As classes e componentes viram com o prefixo ``ds`` de exemplo, substitua ela pelo prefixo usado em seu projeto.
+**Follow the steps below to run the plugin in Figma:**:
 
-<p align="center">
-  <img src="https://github.com/lucbevilaqua/plugin-figma-classify/assets/77061281/66e58030-7bf9-4303-9b98-f4b3cde32dc4" />
-</p>
+1. Run the following command in your project’s terminal:```bash npm run watch```
+2. In your Figma project, click on plugins -> manage plugins… 2.In the plugins section, change the selector to show plugins in development mode
+3. Click on the “New” or “+” button to add a new plugin, then select the option “import plugin from manifest…”
+4. Navigate to your project folder and select the manifest file
+
 
 ## Licença
 
