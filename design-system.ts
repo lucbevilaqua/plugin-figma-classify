@@ -1,4 +1,4 @@
-import { DesignSystem } from "./src/types";
+import { DesignSystem } from "./types/designSystem";
 
 const designSystem: DesignSystem = {
   prefix: "ds",

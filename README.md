@@ -1,6 +1,5 @@
 # Figma Classify
-
-O Figma Classify é um plugin projetado para melhorar a eficiência e a organização dos designers e desenvolvedores no Figma. Utilizando a interface "Generate Code" nativo do figma no modo DEV, o plugin permite que os usuários visualizem e copiem rapidamente nomes de classes CSS e tags HTML geradas automaticamente com base nas instâncias selecionadas de seus designs dos WEB Components referentes ao Design-system. Esse plugin gera classes CSS e codigo de tag HTML apenas para elementos variantes de componentes (Instancias) e para os Frame que utilizam auto-layout o plugin gera uma class "spacing-p-${x}" (onde X é uma variavel relacionando px com rem).
+  as) e para os Frame que utilizam auto-layout o plugin gera uma class "spacing-p-${x}" (onde X é uma variavel relacionando px com rem).
 
 **Atenção:** O plugin está utilizando a nomenclatura de programação Kebab case poís é a mais indica para web components de qualquer design-system.
 

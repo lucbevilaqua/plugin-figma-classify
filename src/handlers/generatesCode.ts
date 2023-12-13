@@ -1,68 +1,44 @@
-import designSystem from '../../design-system'
-import { DsComponentType, FigmaComponentProps, MappingGenerators } from '../types';
+import { Config, CustomConfig, GeneralConfig } from '@typings/config';
+import { FigmaComponentProperties } from '@typings/figma';
 
-const prefix = designSystem.prefix ?? 'ds'
+let config: Config;
 
-function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProperties): string | null {
+  const tagName = config.prefix ? `${config.prefix}-${componentName}` : componentName;
+  if (config.custom?.[componentName])  {
+    const customConfig: CustomConfig = config.custom[componentName]
+    const properties = customConfig.properties
+    let attributes = '';
+    let classCss = '';
 
-function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProps): string | null {
-  const dsComponent = designSystem.components[componentName]
-  const tagName = prefix ? `${prefix}-${componentName}` : componentName;
-  const dsComponentProps = dsComponent.props
-  const dsComponentDirectives = dsComponent.directives
-  let attributes = '';
+    for (const key in properties) {
+      if (Object.prototype.hasOwnProperty.call(properties, key)) {
+        const element = properties[key];
 
-  dsComponentProps.forEach(prop => {
-    const value = componentProperties[prop]
-    attributes += ` ${prop}="${value}"`;
-  });
-
-  dsComponentDirectives.forEach(directive => {
-    const mask = directive.mask
-    const value = dsComponent.options?.capitalize ? capitalizeFirstLetter(componentProperties[directive.key] as string) : componentProperties[directive.key];
-    if (value) {
-      let result = mask.replace('$value', value.toString())
-      result = result.replace('$prefix', prefix)
-     
-      attributes += ` ${result}`;
+        if (element.type === 'cssClass') {
+          classCss += ` ${element.mask}`;
+          classCss = classCss.replace('$propertyName', key)
+          classCss = classCss.replace('$value', componentProperties[key].toString())
+        } else {
+          attributes += ` ${element.mask}`;
+          attributes = attributes.replace('$propertyName', key)
+          attributes = attributes.replace('$value', componentProperties[key].toString())
+        }
+      }
     }
-  });
 
-  return `<${tagName}${attributes}></${tagName}>`;
+    attributes = attributes.replace('$prefix', config.prefix)
+    classCss = classCss.replace('$prefix', config.prefix)
+  
+    return `<${tagName} ${classCss && `class="${classCss}"`}${attributes}></${tagName}>`;
+  } else {
+    return handleGenerateCodeFromFigma(componentName, componentProperties);
+  }
 }
 
-function handleGenerateCodeClassName(componentName: string, componentProperties: FigmaComponentProps): string | null {
-  const dsComponent = designSystem.components[componentName]
-  const className = prefix ? `${prefix}-${componentName}` : componentName;
-  const dsComponentProps = dsComponent.props
-  const dsComponentDirectives = dsComponent.directives
-  let attributes = '';
-
-  dsComponentProps.forEach(prop => {
-    const value = componentProperties[prop]
-    attributes += ` ${prop}="${value}"`;
-  });
-
-  dsComponentDirectives.forEach(directive => {
-    const mask = directive.mask
-    const value = dsComponent.options?.capitalize ? capitalizeFirstLetter(componentProperties[directive.key] as string) : componentProperties[directive.key];
-    if (value) {
-      let result = mask.replace('$value', value.toString())
-      result = result.replace('$prefix', prefix)
-     
-      attributes += ` ${result}`;
-    }
-  });
-
-  return `<span class="${className}${attributes}"></span>`;
-}
-
-function handleGenerateCodeFromFigma(figmaComponent: InstanceNode): string | null {
-  const componentProperties = figmaComponent.variantProperties ?? {};
-  const componentName = figmaComponent.name;
-  const tagName = prefix ? `${prefix}-${componentName}` : componentName;
+function handleGenerateCodeFromFigma(componentName: string, componentProperties: FigmaComponentProperties): string | null {
+  const tagName = config.prefix ? `${config.prefix}-${componentName}` : componentName;
+  const generalConfig: GeneralConfig = config.general
   let attributes = '';
 
   if (!componentProperties && !componentName) {
@@ -71,8 +47,12 @@ function handleGenerateCodeFromFigma(figmaComponent: InstanceNode): string | nul
 
   for (const key in componentProperties) {
     const value = componentProperties[key]
-    attributes += ` ${key}="${value}"`;
+   
+    attributes += ` ${generalConfig.property}`;
+    attributes = attributes.replace('$propertyName', key)
+    attributes = attributes.replace('$value', value.toString())
   }
+  attributes = attributes.replace('$prefix', config.prefix)
 
   return `<${tagName}${attributes}></${tagName}>`;
 };
@@ -80,64 +60,37 @@ function handleGenerateCodeFromFigma(figmaComponent: InstanceNode): string | nul
 function handleGenerateCodeSpacingFromFigma(figmaFrame: FrameNode): string | null {
   const itemSpacing = figmaFrame.itemSpacing ?? 0;
 
-  let cssClassName = prefix ? `${prefix}-spacing` : `spacing`;
+  let cssClassName = config.prefix ? `${config.prefix}-spacing` : `spacing`;
   cssClassName+= `-${itemSpacing}`  
 
   return `<span class="${cssClassName}"></span>`;
 }
 
-function handleGenerateCodeInstance(figmaComponent: InstanceNode): string | null {
-  const componentProperties = figmaComponent.variantProperties ?? {};
-  const componentName = figmaComponent.name;
-
-  const dsComponent = designSystem.components[componentName!]
-
-  if (!componentProperties || !componentName || !dsComponent) {
-    return null
-  }
-  const componentType: DsComponentType = dsComponent.type ?? 'component'
-
-  const mappingGenerators: MappingGenerators = {
-    'component': handleGenerateCodeComponent,
-    'className': handleGenerateCodeClassName,
-  }
-
-  return mappingGenerators[componentType](componentName, componentProperties);
-};
-
-export const handleGenerateCodeSession = (selection: SceneNode): CodegenResult[] => {
+export const handleGenerateCodeSession = (conf: Config, selection: SceneNode): CodegenResult[] => {
   const codegenResult: Array<CodegenResult> = []
-  const hasDsFile = !!Object.keys(designSystem.components).length
+  config = conf
 
   if (selection.type !== 'INSTANCE' && selection.type !== 'FRAME') {
     return []
   }
-  
-  if (!hasDsFile) {
-    if (selection.type === 'INSTANCE') {
-      const code = handleGenerateCodeFromFigma(selection)
-      code && codegenResult.push({
-        language: "HTML",
-        code,
-        title: "Component Exemple",
-      })
-    } else {
-      const code = handleGenerateCodeSpacingFromFigma(selection)
-      code && codegenResult.push({
-        language: "HTML",
-        code,
-        title: "Class CSS Exemple",
-      })
-    }
-  } else {
-    if (selection.type === 'INSTANCE') {
-      const code = handleGenerateCodeInstance(selection)
-      code && codegenResult.push({
-        language: "HTML",
-        code: code,
-        title: "Component Exemple",
-      })
-    }
+
+  if (selection.type === 'INSTANCE') {
+
+    const code = handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
+    code && codegenResult.push({
+      language: 'HTML',
+      code,
+      title: 'Component Exemple'
+    })
+  }
+ 
+  if (selection.type === 'FRAME') {
+    const code = handleGenerateCodeSpacingFromFigma(selection)
+    code && codegenResult.push({
+      language: 'HTML',
+      code,
+      title: 'Component Exemple'
+    })
   }
   
   return codegenResult;

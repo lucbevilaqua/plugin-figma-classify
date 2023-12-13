@@ -1,0 +1,15 @@
+.form-container,
+.form-header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow-x: auto;
+}
+
+.tip-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  border: 1px dashed #1891FB4D;
+  background: #EDF5FA;
+  justify-content: space-around;
+}

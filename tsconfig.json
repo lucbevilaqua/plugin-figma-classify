@@ -2,21 +2,51 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./",
+    "jsx": "react",
     "moduleResolution": "node",
     "target": "ES2016",
     "lib": [
-      "ES2016"
+      "ES2016",
+      "dom",
+      "dom.iterable"
     ],
     "strict": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@figma"
-    ]
+      "./node_modules/@figma",
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "src/ui/components/*"
+      ],
+      "@containers/*": [
+        "src/ui/containers/*"
+      ],
+      "@handlers/*": [
+        "src/handlers/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "@utils/*": [
+        "src/utilities/*"
+      ],
+      "@typings/*": [
+        "types/*"
+      ]
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "design-system.ts",
+    "types/**/*",
+    "src/**/*",
+  ],
+  "files": [
+    "src/main.ts"
   ]
 }

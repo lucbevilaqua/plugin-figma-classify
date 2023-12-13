@@ -1,0 +1,46 @@
+.header {
+  height: 5%;
+}
+
+.content {
+  height: calc(75% - 10px);
+  overflow: auto;
+}
+
+footer {
+  position: relative;
+  height: 10%;
+}
+
+.is-flex {
+  display: flex;
+}
+
+.separator {
+  background: var(--background-silver);
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.gap-16 {
+  gap: 16px;
+}
+
+.plugin-container {
+  padding: 8px 16px;
+}
+
+.section-title {
+  padding: 0 !important;
+}
+
+ul,
+li {
+  padding: 0;
+}
