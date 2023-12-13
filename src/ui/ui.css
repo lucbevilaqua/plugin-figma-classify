@@ -4,7 +4,7 @@
 
 .content {
   height: calc(75% - 10px);
-  overflow: auto;
+  overflow-y: auto;
 }
 
 footer {
