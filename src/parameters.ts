@@ -8,8 +8,8 @@ figma.parameters.on(
   ({ parameters, key, query, result }: ParameterInputEvent) => {
     switch (key) {
       case 'prefix':
-        if(collection) {
-          const prefixDefault = collection.getPluginData('prefix')
+        const prefixDefault = collection.getPluginData('prefix')
+        if(prefixDefault) {
           result.setSuggestions([prefixDefault])
         }
         break
@@ -29,19 +29,8 @@ figma.on("run", ({ parameters }: RunEvent) => {
 // Handlers
 function startPluginWithParameters(parameters: ParameterValues) {
   const prefix = parameters['prefix']
-  const configDefault = {
-    prefix,
-    general: {
-      cssClass: '$propertyName',
-      directive: 'is$value',
-      property: '$propertyName="$value"'
-    }
-  }
-  collection.setPluginData('prefix', parameters['prefix']);
-  
-  if(!collection.getPluginData('config')) {
-    collection.setPluginData('config', JSON.stringify(configDefault));
-  }
+
+  collection.setPluginData('prefix', prefix);
   
   if (figma.editorType !== 'dev') {
     figma.showUI(__html__, showUIOptionsDefault)

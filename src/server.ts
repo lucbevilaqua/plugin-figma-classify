@@ -26,9 +26,7 @@ function handleSetCustomComponents(msg: PluginMessage) {
 }
 
 export function handleSaveConfigDefault(msg: PluginMessage) {
-  const prefix = collection.getPluginData('prefix')
   config = msg.payload as Config;
-  config.prefix = prefix;
   collection.setPluginData('config', JSON.stringify(config));
 }
 

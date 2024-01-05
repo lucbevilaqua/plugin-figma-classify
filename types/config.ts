@@ -1,6 +1,5 @@
 
 export interface Config {
-  prefix: string;
   general: GeneralConfig
   custom?: Record<string, CustomConfig>
 }

@@ -61,7 +61,6 @@ const General = ({ }: GeneralProps) => {
 
   const handleSubmit = () => {
     const config: Config = {
-      prefix: '',
       general: {
         'property': formDefault.properties.size.mask,
         'directive': formDefault.properties.direction.mask,
