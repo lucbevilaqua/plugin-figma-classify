@@ -1,6 +1,6 @@
 import React from "react";
+import './styles.css'
 import { InputComponentProps } from "./types";
-
 
 const InputComponent: React.FunctionComponent<InputComponentProps> = ({
   className = "",
@@ -30,7 +30,7 @@ const Input: React.FunctionComponent<InputComponentProps> = ({
 }) => {
   className = className || "";
   type = type || "text";
-  const inputClass = "input__field";
+  const inputClass = "input__field input-container";
 
   return (
     <div className="input">

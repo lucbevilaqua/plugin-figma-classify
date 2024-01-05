@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Title, Text } from "react-figma-plugin-ds";
+import { Button, Text } from "react-figma-plugin-ds";
 import Form from '@components/form/form';
 
 import './styles.css'
@@ -54,7 +54,7 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
       {component && (
         <>
           <header className='header'>
-            <Title size='xlarge' weight='bold'>Component {component.name ?? ''}</Title>
+            <Text size='xlarge' weight='bold'>Component {component.name ?? ''}</Text>
           </header>
           <div className='content'>
             <Text>Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</Text>

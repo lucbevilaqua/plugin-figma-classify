@@ -28,5 +28,13 @@
       "https://cdn.jsdelivr.net",
       "https://rsms.me"
     ]
-  }
+  },
+  "parameters": [
+    {
+      "name": "Prefix",
+      "key": "prefix",
+      "allowFreeform": true,
+      "description": "prefix that will be used for code generation"
+    }
+  ]
 }

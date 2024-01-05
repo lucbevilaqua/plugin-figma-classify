@@ -19,7 +19,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <hr className='separator' />
+      <div className='separator' />
       <div className="tab-content">{tabs[activeTabIndex].content}</div>
     </div>
   );

@@ -5,6 +5,7 @@ import './styles.css'
 import { FormProps, SelectOption, Form } from "./types";
 import useDebounce from "@src/ui/hooks/useDebounce";
 import Input from "@components/input/input";
+import HelpBubble from "@components/help-bubble/help-bubble";
 
 const Form = ({ component, onPropertiesChange }: FormProps) => {
   const [form, setForm] = useState<Form>(() => {
@@ -54,6 +55,7 @@ const Form = ({ component, onPropertiesChange }: FormProps) => {
           <Select placeholder='Select type of the property' options={options} defaultValue={form[propertyName].type} onChange={(option) => handleChangeType(propertyName, option as SelectOption)}></Select>
           <Input
             placeholder="Input mask for build the value"
+            type="text"
             value={mask}
             disabled={form[propertyName].disabled}
             input={(value) => handleChangeValue(propertyName, value)} />
@@ -64,24 +66,24 @@ const Form = ({ component, onPropertiesChange }: FormProps) => {
 
   return (
     <>
-      <div className="tip-container">
-        <Icon
-          color="blue"
-          name="library"
-        />
-        <div>
-          <Text>You can use our variables listed below in your mask.</Text>
-          <ul>
-            <li><Text size='small'><i>$propertyName</i>: It returns the name of the property that the instance contains.</Text></li>
-            <li><Text size='small'><i>$value</i>: It returns the value of the property that the instance contains.</Text></li>
-            <li><Text size='small'><i>$prefix</i>: It returns the value of the previously informed prefix.</Text></li>
-          </ul>
-        </div>
-      </div>
       <div className='form-header'>
         <Text weight='bold'>Property</Text>
         <Text weight='bold'>Type of Property</Text>
-        <Text weight='bold'>Mask of the value</Text>
+        <div className="is-flex">
+          <Text weight='bold'>
+            Mask of the value
+          </Text>
+          <HelpBubble>
+            <div>
+              <Text>You can use our variables listed below in your mask.</Text>
+              <ul>
+                <li><Text size='small'><i>$propertyName</i>: It returns the name of the property that the instance contains.</Text></li>
+                <li><Text size='small'><i>$value</i>: It returns the value of the property that the instance contains.</Text></li>
+                <li><Text size='small'><i>$prefix</i>: It returns the value of the previously informed prefix.</Text></li>
+              </ul>
+            </div>
+          </HelpBubble>
+        </div>
       </div>
 
       {row}

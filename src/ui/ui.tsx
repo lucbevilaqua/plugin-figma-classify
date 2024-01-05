@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './ui.css'
 import "react-figma-plugin-ds/figma-plugin-ds.css";
 import { Steps } from '@typings/steps';
-import SetConfigurationDefaultProps from '@containers/setConfigurationDefault/setConfigurationDefault';
+import General from '@containers/general/general';
 import CustomConfiguration from '@containers/customConfiguration/customConfiguration';
 import SelectCustomComponents from '@containers/selectCustomComponents/selectCustomComponents';
 import { Tab } from '@components/tabs/types';
@@ -22,12 +22,12 @@ const PluginUI = () => {
         return <CustomConfiguration />
 
       default:
-        return <SetConfigurationDefaultProps />
+        return <General />
     }
   }, [step])
 
   const tabs: Array<Tab> = [
-    { label: 'General', content: <SetConfigurationDefaultProps /> },
+    { label: 'General', content: <General /> },
     { label: 'Custom', content: <>{Content}</> },
   ]
 

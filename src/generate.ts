@@ -1,7 +1,43 @@
+import { getPluginCollection } from '@src/utils';
 import { Config, CustomConfig, GeneralConfig } from '@typings/config';
 import { FigmaComponentProperties } from '@typings/figma';
 
-let config: Config;
+const collection: VariableCollection = getPluginCollection();
+const config: Config = JSON.parse(collection.getPluginData('config') || '{}')
+const selection: SceneNode = figma.currentPage.selection[0];
+
+// Listeners
+figma.codegen.on("generate", () => handleGenerateCodeSession());
+
+// Handlers
+const handleGenerateCodeSession = (): CodegenResult[] => {
+  const codegenResult: Array<CodegenResult> = []
+
+  if (selection.type !== 'INSTANCE' && selection.type !== 'FRAME') {
+    return []
+  }
+
+  if (selection.type === 'INSTANCE') {
+
+    const code = handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
+    code && codegenResult.push({
+      language: 'HTML',
+      code,
+      title: 'Component Exemple'
+    })
+  }
+ 
+  if (selection.type === 'FRAME') {
+    const code = handleGenerateCodeSpacingFromFigma(selection)
+    code && codegenResult.push({
+      language: 'HTML',
+      code,
+      title: 'Component Exemple'
+    })
+  }
+  
+  return codegenResult;
+}
 
 function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProperties): string | null {
   const tagName = config.prefix ? `${config.prefix}-${componentName}` : componentName;
@@ -64,34 +100,4 @@ function handleGenerateCodeSpacingFromFigma(figmaFrame: FrameNode): string | nul
   cssClassName+= `-${itemSpacing}`  
 
   return `<span class="${cssClassName}"></span>`;
-}
-
-export const handleGenerateCodeSession = (conf: Config, selection: SceneNode): CodegenResult[] => {
-  const codegenResult: Array<CodegenResult> = []
-  config = conf
-
-  if (selection.type !== 'INSTANCE' && selection.type !== 'FRAME') {
-    return []
-  }
-
-  if (selection.type === 'INSTANCE') {
-
-    const code = handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
-    code && codegenResult.push({
-      language: 'HTML',
-      code,
-      title: 'Component Exemple'
-    })
-  }
- 
-  if (selection.type === 'FRAME') {
-    const code = handleGenerateCodeSpacingFromFigma(selection)
-    code && codegenResult.push({
-      language: 'HTML',
-      code,
-      title: 'Component Exemple'
-    })
-  }
-  
-  return codegenResult;
 }

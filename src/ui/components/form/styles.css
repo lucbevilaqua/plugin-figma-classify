@@ -2,6 +2,8 @@
 .form-header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--background-silver);
+  gap: 24px;
 }
 
 .tip-container {
@@ -9,6 +11,7 @@
   align-items: center;
   justify-content: start;
   border: 1px dashed #1891FB4D;
-  background: #EDF5FA;
   justify-content: space-around;
+  background-color: var(--figma-color-bg);
+  color: var(--figma-color-text);
 }

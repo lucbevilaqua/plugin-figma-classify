@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Text, Button, Title } from "react-figma-plugin-ds";
+import { Text, Button } from "react-figma-plugin-ds";
 
 import './styles.css'
-import { SetConfigurationDefaultProps } from "./types";
+import { GeneralProps } from "./types";
 import Form from "@components/form/form";
 import { Config, CustomConfig } from "@typings/config";
-import Input from "@components/input/input";
 import { PluginMessage } from "@typings/pluginMessages";
 import Alert from "@components/alert/alert";
 
@@ -19,8 +18,7 @@ const valueDefault: CustomConfig = {
   }
 }
 
-const SetConfigurationDefaultProps = ({ }: SetConfigurationDefaultProps) => {
-  const [prefix, setPrefix] = useState<string>('')
+const General = ({ }: GeneralProps) => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [formDefault, setFormDefault] = useState<CustomConfig>(valueDefault)
 
@@ -30,11 +28,9 @@ const SetConfigurationDefaultProps = ({ }: SetConfigurationDefaultProps) => {
 
       if (msg.action === 'getConfig' && msg.payload.general) {
         const data: Config = msg.payload;
-        setPrefix(data.prefix)
 
         setFormDefault(prev => ({
           ...prev,
-          prefix: data.prefix,
           properties: {
             size: { type: 'property', mask: data.general.property },
             direction: { type: 'directive', mask: data.general.directive },
@@ -62,13 +58,10 @@ const SetConfigurationDefaultProps = ({ }: SetConfigurationDefaultProps) => {
     }));
   };
 
-  const handlePrefixChange = (prefix: string) => {
-    setPrefix(prefix);
-  };
 
   const handleSubmit = () => {
     const config: Config = {
-      prefix,
+      prefix: '',
       general: {
         'property': formDefault.properties.size.mask,
         'directive': formDefault.properties.direction.mask,
@@ -89,18 +82,11 @@ const SetConfigurationDefaultProps = ({ }: SetConfigurationDefaultProps) => {
     <>
       {AlertMemo}
       <header className='header'>
-        <Title size='xlarge' weight='bold'>Let's start configuring !</Title>
+        <Text size='xlarge' weight='bold'>Let's start configuring !</Text>
       </header>
+
       <div className='content'>
         <Text>Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</Text>
-        <Text>Enter your application prefix below.</Text>
-        <div className="is-flex gap-16 align-center">
-          <Text weight="bold">Prefix:</Text>
-          <Input
-            placeholder="Input prefix of your application"
-            value={prefix}
-            input={handlePrefixChange} />
-        </div>
         <Form
           component={formDefault.properties}
           onPropertiesChange={handleFormChange}
@@ -117,4 +103,4 @@ const SetConfigurationDefaultProps = ({ }: SetConfigurationDefaultProps) => {
   );
 };
 
-export default SetConfigurationDefaultProps;
+export default General;
