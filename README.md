@@ -1,4 +1,4 @@
-# Figma Classify
+# Figma CodeGen Mapper Plugin
 Elevate your Figma designs to operational excellence with the Figma CodeGen Plugin. This innovative tool is essential for automating the generation of HTML tags, CSS classes, and instance directives from your Figma instances. Designed to bridge the gap between design and development, it ensures a smooth transition of your visual components into executable code.
 
 Customizable UI for Precise Code Generation The plugin boasts a user-friendly interface with two main screens:
@@ -26,7 +26,6 @@ https://github.com/lucbevilaqua/plugin-figma-classify/assets/77061281/f4dba4f5-1
 - **types/***: Contains all types used in our application.
 - **dist/**: Contains the entire plugin built for javascript
 - **src/***: All plugin files that will be built to the /dist folder.
-- **handlers/***: Files that are called solely by main.ts, which normally deal with the logic part of the plugin.
 - **ui/***: React application for creating the UI of our plugin in normal figma mode.
 - **components/***: All generic components and sole responsibility.
 - **containers/***: Containers are components that call one or more components and that usually have more than one responsibility.
@@ -51,6 +50,7 @@ You can find more detailed information in the official documentation [plugin-qui
 2. In your Figma project, click on plugins -> manage plugins… 2.In the plugins section, change the selector to show plugins in development mode
 3. Click on the “New” or “+” button to add a new plugin, then select the option “import plugin from manifest…”
 4. Navigate to your project folder and select the manifest file
+5. Run the plugin in figma, enter the desired prefix name (if you have already done this, the same name will be suggested) and press enter.
 
 
 ## Licença

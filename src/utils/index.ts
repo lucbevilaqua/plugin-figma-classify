@@ -4,10 +4,10 @@ export function capitalizeFirstLetter(str: string) {
 
 export function getPluginCollection() {
   const localCollections = figma.variables.getLocalVariableCollections();
-  let collection: VariableCollection = localCollections.find(lc => lc.name === 'figma-classify')!;
+  let collection: VariableCollection = localCollections.find(lc => lc.name === 'codegen-mapper')!;
   
   if(!collection) {
-    collection = figma.variables.createVariableCollection('figma-classify');
+    collection = figma.variables.createVariableCollection('codegen-mapper');
   }
   
   return collection;

@@ -1,7 +1,7 @@
 {
-  "name": "figma-classify",
+  "name": "figma-codegen-mapper-plugin",
   "version": "1.0.0",
-  "description": "Plugin que gera tag html e nomes de classes de acordo com o padrao de ids",
+  "description": "Plugin for automating the generation of HTML tags, CSS classes, and instance directives from your Figma instances",
   "main": "dist/main.js",
   "scripts": {
     "build": "webpack --mode production",
