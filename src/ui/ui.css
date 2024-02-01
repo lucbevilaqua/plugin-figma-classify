@@ -1,5 +1,10 @@
+@import './components/table/styles.css';
+
 :root {
-  --ramp-grey-600: #444444
+  --ramp-grey-600: #444444;
+  --ramp-grey-700: #383838;
+  --elevation-500-modal-window: 0px 10px 24px rgba(0, 0, 0, .45), 0px 3px 5px rgba(0, 0, 0, .35), inset 0px 1px 0px rgba(255, 255, 255, .08), inset 0px 0px 1px rgba(255, 255, 255, .35);
+  --color-bg-secondary: var(--ramp-grey-700);
 }
 
 *,
@@ -26,6 +31,11 @@ footer {
   padding: 8px 16px;
   margin-right: -16px;
   margin-left: -16px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--ramp-grey-600, rgba(0, 0, 0, .1));
 }
 
 .is-flex {
@@ -74,4 +84,22 @@ footer {
 ul,
 li {
   padding: 0;
+}
+
+.close-button {
+  border: 1px solid transparent;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  flex: 0 0 32px;
+  line-height: 32px;
+  cursor: pointer;
+  fill: var(--color-icon, #000);
+  color: var(--color-icon, #000);
+  border-radius: 2px;
+  background-clip: padding-box;
+  background-color: transparent;
 }

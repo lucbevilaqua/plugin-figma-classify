@@ -7,17 +7,34 @@
   "enableProposedApi": false,
   "editorType": [
     "figma",
-    "figjam",
     "dev"
   ],
   "capabilities": [
     "codegen",
     "vscode"
   ],
+  "menu": [
+    {
+      "name": "configuration codegen",
+      "command": "configureCodegen",
+      "parameters": [
+        {
+          "name": "Prefix",
+          "key": "prefix",
+          "allowFreeform": true,
+          "description": "prefix that will be used for code generation"
+        }
+      ]
+    },
+    {
+      "name": "reset all configurations",
+      "command": "resetAllConfigurations"
+    }
+  ],
   "codegenLanguages": [
     {
-      "label": "HTML",
-      "value": "html"
+      "label": "Angular",
+      "value": "angular"
     }
   ],
   "networkAccess": {
@@ -28,13 +45,5 @@
       "https://cdn.jsdelivr.net",
       "https://rsms.me"
     ]
-  },
-  "parameters": [
-    {
-      "name": "Prefix",
-      "key": "prefix",
-      "allowFreeform": true,
-      "description": "prefix that will be used for code generation"
-    }
-  ]
+  }
 }

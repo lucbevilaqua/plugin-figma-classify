@@ -19,15 +19,9 @@ figma.parameters.on(
   }
 )
 
-// When the user presses Enter after inputting all parameters, the 'run' event is fired.
-figma.on("run", ({ parameters }: RunEvent) => {
-  if (parameters) {
-    startPluginWithParameters(parameters);
-  }
-});
 
 // Handlers
-function startPluginWithParameters(parameters: ParameterValues) {
+export function startPluginWithParameters(parameters: ParameterValues) {
   const prefix = parameters['prefix']
 
   collection.setPluginData('prefix', prefix);

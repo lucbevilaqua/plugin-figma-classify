@@ -6,7 +6,6 @@ import { GeneralProps } from "./types";
 import Form from "@components/form/form";
 import { Config, CustomConfig } from "@typings/config";
 import { PluginMessage } from "@typings/pluginMessages";
-import Alert from "@components/alert/alert";
 
 const valueDefault: CustomConfig = {
   key: '12345',
@@ -37,6 +36,7 @@ const General = ({ }: GeneralProps) => {
             bold: { type: 'cssClass', mask: data.general.cssClass },
           }
         }))
+        parent.postMessage({ pluginMessage: { action: 'generateCodeExemple', payload: { name: 'exemple', form: formDefault } } }, '*');
       }
     }
 
@@ -62,24 +62,16 @@ const General = ({ }: GeneralProps) => {
   const handleSubmit = () => {
     const config: Config = {
       general: {
-        'property': formDefault.properties.size.mask,
-        'directive': formDefault.properties.direction.mask,
-        'cssClass': formDefault.properties.bold.mask
+        'property': formDefault.properties.size.mask!,
+        'directive': formDefault.properties.direction.mask!,
+        'cssClass': formDefault.properties.bold.mask!
       }
     }
     parent.postMessage({ pluginMessage: { action: 'saveConfigDefault', payload: config } }, '*');
-    setShowAlert(true)
   }
-
-  const AlertMemo = useMemo(() => {
-    return (
-      <Alert show={showAlert} changeDisplay={setShowAlert} message="Dados salvos com sucesso!" />
-    )
-  }, [showAlert])
 
   return (
     <>
-      {AlertMemo}
       <header className='header'>
         <Text size='xlarge' weight='bold'>Let's start configuring !</Text>
       </header>
@@ -87,8 +79,9 @@ const General = ({ }: GeneralProps) => {
       <div className='content'>
         <Text>Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</Text>
         <Form
-          component={formDefault.properties}
+          component={formDefault}
           onPropertiesChange={handleFormChange}
+          hasDisabledPropType
         />
       </div>
       <footer className='is-flex align-center justify-end gap-16'>

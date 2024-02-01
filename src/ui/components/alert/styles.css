@@ -1,8 +1,0 @@
-.alert {
-  display: flex;
-  align-items: center;
-  padding: 8 16;
-  height: 40px;
-  border: 1px solid rgba(30, 192, 75, 0.80);
-  background: rgba(30, 192, 75, 0.20);
-}

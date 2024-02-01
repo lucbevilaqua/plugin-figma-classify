@@ -1,5 +1,6 @@
 import { showUIOptionsDefault } from './utils';
 import './parameters';
+import './commands';
 import './server';
 import './generate';
 

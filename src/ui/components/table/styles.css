@@ -1,0 +1,43 @@
+.table-container {
+  position: relative;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, 1fr);
+  color: var(--figma-color-text);
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.table-container tbody {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: inherit;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: inherit;
+  position: relative;
+}
+
+tr {
+  display: grid;
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-template-columns: inherit;
+  width: 100%;
+  gap: inherit;
+}
+
+tr td {
+  height: 40px;
+  padding: 0 16px;
+  align-items: center;
+  display: flex;
+  outline: 1px solid var(--ramp-grey-600);
+}
+
+tr:first-child td {
+  font-weight: 600;
+}

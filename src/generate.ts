@@ -24,49 +24,96 @@ const handleGenerateCodeSession = (): CodegenResult[] => {
     return []
   }
 
-  const code = handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
-  code && codegenResult.push({
-    language: 'HTML',
-    code,
-    title: 'Component Exemple'
-  })
- 
+  if(config.custom?.[selection.name]) {
+    return handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
+  } else {
+    const code = handleGenerateCodeFromFigma(selection.name, selection.variantProperties ?? {})
+    code && codegenResult.push({
+      language: 'HTML',
+      code,
+      title: 'Component Exemple'
+    })   
+  }
+
   return codegenResult;
 }
 
-function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProperties): string | null {
+export function getGenerateCodeComponentExemple(componentName: string, properties: any): void{
   const prefix: string = collection.getPluginData('prefix')
 
   const tagName = prefix ? `${prefix}-${componentName}` : componentName;
-  if (config.custom?.[componentName])  {
-    const customConfig: CustomConfig = config.custom[componentName]
-    const properties = customConfig.properties
-    let attributes = '';
-    let classCss = '';
+  let attributes = '';
+  let classCss = '';
 
-    for (const key in properties) {
-      if (Object.prototype.hasOwnProperty.call(properties, key)) {
-        const element = properties[key];
+  for (const key in properties) {
+    if (Object.prototype.hasOwnProperty.call(properties, key)) {
+      const element = properties[key];
 
-        if (element.type === 'cssClass') {
-          classCss += ` ${element.mask}`;
-          classCss = classCss.replace('$propertyName', key)
-          classCss = classCss.replace('$value', componentProperties[key].toString())
-        } else {
-          attributes += ` ${element.mask}`;
-          attributes = attributes.replace('$propertyName', key)
-          attributes = attributes.replace('$value', componentProperties[key].toString())
-        }
+      if (element.type === 'cssClass') {
+        classCss += ` ${element.mask}`;
+        classCss = classCss.replace('$propertyName', key)
+        classCss = classCss.replace('$value', 'Apple')
+      } else if (element.type !== 'code') {
+        attributes += ` ${element.mask}`;
+        attributes = attributes.replace('$propertyName', key)
+        attributes = attributes.replace('$value', 'Apple')
       }
     }
-
-    attributes = attributes.replace('$prefix', prefix)
-    classCss = classCss.replace('$prefix', prefix)
-  
-    return `<${tagName} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${tagName}>`;
-  } else {
-    return handleGenerateCodeFromFigma(componentName, componentProperties);
   }
+
+  attributes = attributes.replace('$prefix', prefix)
+  classCss = classCss.replace('$prefix', prefix)
+
+  const codeExemple = `<${tagName} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${tagName}>`;
+  setTimeout(() => figma.ui.postMessage({ action: 'getGenerateCodeExemple', payload: { code: codeExemple } }));
+}
+
+function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProperties): Array<CodegenResult> {
+  const codegenResult: Array<CodegenResult> = []
+
+  const prefix: string = collection.getPluginData('prefix')
+
+  const tagName = prefix ? `${prefix}-${componentName}` : componentName;
+  const customConfig: CustomConfig = config.custom![componentName]
+
+  const properties = customConfig.properties
+  let attributes = '';
+  let classCss = '';
+
+  for (const key in properties) {
+    if (Object.prototype.hasOwnProperty.call(properties, key)) {
+      const element = properties[key];
+
+      if (element.type === 'code') {
+        codegenResult.push({
+          language: 'HTML',
+          code: element.code!,
+          title: `Code exemple to property ${key}`
+        })
+      } else if (element.type === 'cssClass') {
+        classCss += ` ${element.mask}`;
+        classCss = classCss.replace('$propertyName', key)
+        classCss = classCss.replace('$value', componentProperties[key].toString())
+      } else {
+        attributes += ` ${element.mask}`;
+        attributes = attributes.replace('$propertyName', key)
+        attributes = attributes.replace('$value', componentProperties[key].toString())
+      }
+    }
+  }
+
+  attributes = attributes.replace('$prefix', prefix)
+  classCss = classCss.replace('$prefix', prefix)
+
+  const code = `<${tagName} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${tagName}>`;
+
+  codegenResult.push({
+    language: 'HTML',
+    code,
+    title: 'Component exemple'
+  })
+
+  return codegenResult;
 }
 
 function handleGenerateCodeFromFigma(componentName: string, componentProperties: FigmaComponentProperties): string | null {

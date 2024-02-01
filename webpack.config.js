@@ -1,4 +1,5 @@
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const webpack = require('webpack')
@@ -39,6 +40,7 @@ module.exports = (env, argv) => ({
     plugins: [new TsconfigPathsPlugin({/* options: see below */ })]
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       global: {} // Fix missing symbol error when running in developer VM
     }),

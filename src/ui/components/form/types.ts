@@ -1,9 +1,10 @@
-import { ComponentPropertiesCodeType, ComponentProperties } from "@typings/config";
+import { ComponentPropertiesCodeType, CustomConfig } from "@typings/config";
 import { SelectOption as FSP } from "react-figma-plugin-ds";
 
 export interface FormProps {
-  component: ComponentProperties
+  component: CustomConfig
   onPropertiesChange: (form: Form) => void
+  hasDisabledPropType?: boolean
 }
 
 export interface Form {
@@ -12,5 +13,6 @@ export interface Form {
 
 export interface SelectOption extends FSP {
   value: ComponentPropertiesCodeType
-  mask: string
+  mask?: string
+  code?: string
 }
