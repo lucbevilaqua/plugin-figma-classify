@@ -7,6 +7,7 @@ export interface Config {
 export interface CustomConfig  {
   key: string
   name: string
+  hasComponentNameTag: boolean
   properties: ComponentProperties
 }
 

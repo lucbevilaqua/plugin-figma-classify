@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Select, SelectOption, Text } from "react-figma-plugin-ds";
+import { Button, Checkbox, Select, SelectOption, Text } from "react-figma-plugin-ds";
 import Form from '@components/form/form';
 
 import './styles.css'
@@ -42,12 +42,19 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
     }));
   };
 
+  const handleComponentTypeChange = () => {
+    setComponent(prevMappings => ({
+      ...prevMappings,
+      hasComponentNameTag: !prevMappings.hasComponentNameTag
+    }));
+  };
+
   return (
     <>
       {component && (
         <>
-          <header className='header'>
-            <Text size='xlarge' weight='bold'>Component</Text>
+          <header className='is-flex align-center gap-16'>
+            <Text size='xlarge' weight='bold'>Component:</Text>
             <Select
               placeholder='Select component'
               options={componentList.map((component) => ({ value: component.key, label: component.name }))}
@@ -55,13 +62,21 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
             />
           </header>
           <div className='content'>
+
             {component.properties &&
               <>
-                <Text>Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</Text>
-                <Form
-                  component={component}
-                  onPropertiesChange={handleFormChange}
-                />
+                <div>
+                  <input type="checkbox" checked={component.hasComponentNameTag} onChange={handleComponentTypeChange} />
+                  <span>Include component name in generated code?</span>
+                </div>
+                <div>
+
+                  <Text>Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</Text>
+                  <Form
+                    component={component}
+                    onPropertiesChange={handleFormChange}
+                  />
+                </div>
               </>
             }
           </div>

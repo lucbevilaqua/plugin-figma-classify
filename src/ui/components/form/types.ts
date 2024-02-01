@@ -8,7 +8,7 @@ export interface FormProps {
 }
 
 export interface Form {
-  [key: string]: { type: ComponentPropertiesCodeType, mask: string, disabled: boolean};
+  [key: string]: { type: ComponentPropertiesCodeType, mask: string};
 }
 
 export interface SelectOption extends FSP {

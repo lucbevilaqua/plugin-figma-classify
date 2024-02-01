@@ -10,6 +10,7 @@ import { PluginMessage } from "@typings/pluginMessages";
 const valueDefault: CustomConfig = {
   key: '12345',
   name: 'exemple',
+  hasComponentNameTag: true,
   properties: {
     size: { type: 'property', mask: '$propertyName="$value"' },
     direction: { type: 'directive', mask: 'is$value' },

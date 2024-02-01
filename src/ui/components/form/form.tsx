@@ -33,7 +33,7 @@ const Form = ({ component, onPropertiesChange, hasDisabledPropType = false }: Fo
     for (const key in properties.current) {
       if (Object.prototype.hasOwnProperty.call(properties.current, key)) {
         const values = properties.current[key];
-        obj[key] = { ...values, disabled: false }
+        obj[key] = { ...values }
       }
     }
 
@@ -87,7 +87,7 @@ const Form = ({ component, onPropertiesChange, hasDisabledPropType = false }: Fo
 
     setForm((prev) => ({
       ...prev,
-      [propertyName]: { ...property, type: value, disabled: value === 'cssClass' }
+      [propertyName]: { ...property, type: value }
     } as Form))
   }
 
@@ -137,7 +137,6 @@ const Form = ({ component, onPropertiesChange, hasDisabledPropType = false }: Fo
                 placeholder="Input mask for build the value"
                 type="text"
                 value={mask}
-                disabled={form[propertyName].disabled}
                 input={(value) => handleChangeValue(propertyName, value)} />
           }
         </div>

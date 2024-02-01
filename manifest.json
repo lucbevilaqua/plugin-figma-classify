@@ -1,5 +1,5 @@
 {
-  "name": "figma-codegen-mapper",
+  "name": "plugin figma codegen",
   "id": "1314693808615895175",
   "api": "1.0.0",
   "main": "dist/main.js",

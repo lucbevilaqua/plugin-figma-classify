@@ -1,5 +1,5 @@
 {
-  "name": "figma-codegen-mapper-plugin",
+  "name": "plugin-figma-codegen",
   "version": "2.0.0",
   "description": "Plugin for automating the generation of HTML tags, CSS classes, and instance directives from your Figma instances",
   "main": "dist/main.js",

@@ -63,7 +63,6 @@ export function getGenerateCodeComponentExemple(componentName: string, propertie
 
   attributes = attributes.replace('$prefix', prefix)
   classCss = classCss.replace('$prefix', prefix)
-
   const codeExemple = `<${tagName} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${tagName}>`;
   setTimeout(() => figma.ui.postMessage({ action: 'getGenerateCodeExemple', payload: { code: codeExemple } }));
 }
@@ -104,8 +103,9 @@ function handleGenerateCodeComponent(componentName: string, componentProperties:
 
   attributes = attributes.replace('$prefix', prefix)
   classCss = classCss.replace('$prefix', prefix)
+  const componentTag = customConfig.hasComponentNameTag ? tagName : 'span';
 
-  const code = `<${tagName} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${tagName}>`;
+  const code = `<${componentTag} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${componentTag}>`;
 
   codegenResult.push({
     language: 'HTML',

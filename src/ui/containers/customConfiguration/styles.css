@@ -1,1 +1,6 @@
-
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: calc(73% - 10px);
+}
