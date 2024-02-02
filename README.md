@@ -16,10 +16,10 @@ https://github.com/lucbevilaqua/plugin-figma-codegen-mapper/assets/77061281/4dba
 ```
 ├───dist
 ├───src
-│   ├───handlers
 │   ├───ui
 │   │   ├───components
 │   │   ├───containers
+│   │   ├───pages
 │   │   └───hooks
 │   └───utils
 └───types
@@ -52,6 +52,9 @@ You can find more detailed information in the official documentation [plugin-qui
 3. Click on the “New” or “+” button to add a new plugin, then select the option “import plugin from manifest…”
 4. Navigate to your project folder and select the manifest file
 5. Run the plugin in figma -> configuration codegen, enter the desired prefix name (if you have already done this, the same name will be suggested) and press enter.
+
+## Layout
+The project uses the styling of the [uishadcn](https://ui.shadcn.com/) library.
 
 
 ## Licença
