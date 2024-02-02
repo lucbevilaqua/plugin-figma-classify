@@ -84,8 +84,13 @@ function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomCon
 }
 
 function mapFigmaIntanceToCustomConfig(instance: InstanceNode): CustomConfig | null {
-  const component = instance.parent as ComponentSetNode;
-  return mapFigmaComponentToCustomConfig(component)
+  const component = instance?.mainComponent?.parent as ComponentSetNode;
+
+  if (component?.variantGroupProperties) {
+    return mapFigmaComponentToCustomConfig(component)
+  }
+  
+  return null
 }
 
 function focusOnCurrentComponent(key: string) {

@@ -4,7 +4,7 @@ import './styles.css'
 import { PluginMessage } from '@typings/pluginMessages';
 import { SetCustomConfigurationProps } from './types';
 import { CustomConfig, ComponentProperties } from '@typings/config';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/ui/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/components/ui/card';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/ui/components/ui/command';
 import { Button } from '@/ui/components/ui/button';
 import { CheckIcon, SaveAllIcon } from 'lucide-react';
@@ -37,7 +37,7 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
   }
 
   const handleComponentChange = (optionValue: string) => {
-    setComponent(componentList.find((component) => component.name === optionValue))
+    setComponent(componentList.find((component) => component.name.toLowerCase() === optionValue.toLowerCase()))
     setOpen(false)
     parent.postMessage({ pluginMessage: { action: 'setComponentFocus', payload: component.key } }, '*');
   }
@@ -60,38 +60,40 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
     <Card>
       <CardHeader>
         <CardTitle>Let's start configuring !</CardTitle>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="w-full justify-between"
-            >
-              {component.name ? component.name : 'Enter the name of the component or instance...'}
-              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput placeholder="Search framework..." className="h-9" />
-              <CommandEmpty>No framework found.</CommandEmpty>
-              <CommandGroup>
-                {componentList.map((co) => (
-                  <CommandItem key={co.key} value={co.name} onSelect={handleComponentChange}>
-                    <span>{co.name}</span>
-                    <CheckIcon
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        component.name === co.name ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <CardDescription>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full justify-between"
+              >
+                {component.name ? component.name : 'Enter the name of the component or instance...'}
+                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search framework..." className="h-9" />
+                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandGroup>
+                  {componentList.map((co) => (
+                    <CommandItem key={co.key} value={co.name} onSelect={handleComponentChange}>
+                      <span>{co.name}</span>
+                      <CheckIcon
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          component.name === co.name ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         {component.properties &&

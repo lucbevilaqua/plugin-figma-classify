@@ -9,7 +9,7 @@ import { PropertyType } from "./table/types";
 
 
 const getGenerateCodeComponentExemple = (component: CustomConfig): string => {
-  const prefix: string = 'exemple'
+  const prefix: string = 'app'
   const componentName = component.name;
   const properties = component.properties;
 

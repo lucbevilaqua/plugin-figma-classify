@@ -43,7 +43,7 @@ const TableComponent = ({ component, onTypeChange, onInputValue }: TableProps) =
         <TableRow>
           <TableHead>Property</TableHead>
           <TableHead>Type of Property</TableHead>
-          <TableHead>Values</TableHead>
+          <TableHead className="w-[120px]">Values</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -68,7 +68,7 @@ const TableComponent = ({ component, onTypeChange, onInputValue }: TableProps) =
               <TableCell>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline">{property.values.map(item => item.value).join(', ')}</Button>
+                    <Button variant="outline" className="truncate">{property.values.map(item => item.value).join(', ')}</Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-80">
                     <div className="grid gap-4">
