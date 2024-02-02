@@ -12,6 +12,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/ui/components/ui/popo
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { cn } from '@/ui/lib/utils';
 import ComponentPropertyMapper from '../../containers/componentPropertyMapper/componentPropertyMapper';
+import { Input } from '@/ui/components/ui/input';
+import { Label } from '@/ui/components/ui/label';
 
 const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
   const [componentList, setComponentList] = useState<Array<any>>([]);
@@ -49,10 +51,10 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
     }));
   };
 
-  const handleComponentTypeChange = () => {
+  const handleComponentTageChange = (value: string) => {
     setComponent(prevMappings => ({
       ...prevMappings,
-      hasComponentNameTag: !prevMappings.hasComponentNameTag
+      tag: value
     }));
   };
 
@@ -101,6 +103,15 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
             <p className="leading-7 [&:not(:first-child)]:mt-6">
               Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.
             </p>
+            <div className='flex gap-4'>
+              <Label htmlFor="componentTag" className='min-w-32 flex items-center'>Component Tag</Label>
+              <Input
+                id='componentTag'
+                defaultValue={component.tag ?? component.name}
+                onInput={(event) => handleComponentTageChange(event.currentTarget.value)}
+                className="h-8"
+              />
+            </div>
             <ComponentPropertyMapper
               component={component}
               onPropertiesChange={handlePropertiesChange}

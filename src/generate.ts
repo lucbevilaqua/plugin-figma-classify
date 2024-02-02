@@ -9,13 +9,15 @@ const configDefault = {
 }
 const collection: VariableCollection = getPluginCollection();
 const config: Config = JSON.parse(collection.getPluginData('config') || JSON.stringify({ custom: {} }));
-const selection: SceneNode = figma.currentPage.selection[0];
+let selection: SceneNode = figma.currentPage.selection[0];
 
 // Listeners
 figma.codegen.on("generate", () => handleGenerateCodeSession());
+figma.on("selectionchange", () => handleGenerateCodeSession());
 
 // Handlers
 const handleGenerateCodeSession = (): CodegenResult[] => {
+  selection = figma.currentPage.selection[0]
   const codegenResult: Array<CodegenResult> = []
 
   if (selection.type !== 'INSTANCE') {
@@ -66,9 +68,10 @@ function handleGenerateCodeComponent(componentName: string, componentProperties:
     }
   }
 
+  let componentTag = customConfig.tag ? customConfig.tag : 'span';
+  componentTag = componentTag.replace('$prefix', prefix);
   attributes = attributes.replace('$prefix', prefix)
   classCss = classCss.replace('$prefix', prefix)
-  const componentTag = customConfig.hasComponentNameTag ? tagName : 'span';
 
   const code = `<${componentTag} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${componentTag}>`;
 

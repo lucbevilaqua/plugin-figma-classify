@@ -1,5 +1,5 @@
 import { Config, CustomConfig } from "@typings/config";
-import { getPluginCollection } from "./utils";
+import { getPluginCollection, toCamelCase } from "./utils";
 import { PluginMessage } from '@typings/pluginMessages'
 
 const collection: VariableCollection = getPluginCollection();
@@ -54,7 +54,8 @@ function handleSaveConfig(msg: PluginMessage) {
 
 function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomConfig | null {
   let properties: Record<string, any> = {};
-  let hasComponentNameTag = true;
+  const name = toCamelCase(component.name);
+  let tag = `$prefix-${name}`;
   if ('variantGroupProperties' in component && component.variantGroupProperties) {
     properties = component.variantGroupProperties;
   } else {
@@ -63,7 +64,7 @@ function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomCon
   
   if(config.custom?.[component.name]) {
     properties = config.custom[component.name].properties
-    hasComponentNameTag = config.custom[component.name].hasComponentNameTag ?? true
+    tag = config.custom[component.name].tag
   } else {
     for (const key in properties) {
       if (Object.prototype.hasOwnProperty.call(properties, key)) {
@@ -76,7 +77,7 @@ function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomCon
   const componentData: CustomConfig = {
     key: component.key,
     name: component.name,
-    hasComponentNameTag,
+    tag,
     properties
   };
 

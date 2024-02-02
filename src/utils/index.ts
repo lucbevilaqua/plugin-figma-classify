@@ -13,6 +13,18 @@ export function getPluginCollection() {
   return collection;
 }
 
+export function toCamelCase(str: string) {
+  return str
+      // Substitui espaços, sublinhados ou hifens por espaços
+      .replace(/[\s_\-]+/g, ' ')
+      // Substitui o primeiro caractere de cada palavra, exceto a primeira, por maiúsculas
+      .replace(/\w\S*/g, function(txt, index) {
+          return index === 0 ? txt.toLowerCase() : txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      })
+      // Remove espaços
+      .replace(/\s+/g, '');
+}
+
 export const showUIOptionsDefault: ShowUIOptions = { 
   themeColors: true,
   height: 600,

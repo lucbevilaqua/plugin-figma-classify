@@ -6,11 +6,12 @@ import useDebounce from "@src/ui/hooks/useDebounce";
 import { ComponentProperties, CustomConfig } from "@typings/config";
 import TableComponent from "./table/table";
 import { PropertyType } from "./table/types";
+import { toCamelCase } from "@/utils";
 
 
 const getGenerateCodeComponentExemple = (component: CustomConfig): string => {
   const prefix: string = 'app'
-  const componentName = component.name;
+  const componentName = toCamelCase(component.name);
   const properties = component.properties;
 
   const tagName = prefix ? `${prefix}-${componentName}` : componentName;
@@ -45,6 +46,10 @@ const ComponentPropertyMapper = ({ component, onPropertiesChange }: ComponentPro
   const [codeExemple, setCodeExemplo] = useState<string>(getGenerateCodeComponentExemple(component))
   const [properties, setProperties] = useState<ComponentProperties>(() => component.properties)
   const debouncedPropertiesValue = useDebounce(properties, 500);
+
+  useEffect(() => {
+    setProperties(component.properties)
+  }, [component]);
 
   useEffect(() => {
     onPropertiesChange(properties)
