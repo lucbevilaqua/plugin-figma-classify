@@ -1,12 +1,8 @@
 export type PluginCommands = 'startOnboarding' | 
   'saveConfig' |
-  'saveConfigDefault' |
   'getAllComponents' |
   'currentComponent' |
-  'setComponentFocus' |
-  'getConfig' |
-  'generateCodeExemple' |
-  'getGenerateCodeExemple'
+  'setComponentFocus'
 
 export interface PluginMessage {
   action: PluginCommands

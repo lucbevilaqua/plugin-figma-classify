@@ -31,12 +31,16 @@ module.exports = (env, argv) => ({
       // Enables including CSS by doing "import './file.css'" in your TypeScript code
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
+        ]
       },
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.css'],
     plugins: [new TsconfigPathsPlugin({/* options: see below */ })]
   },
   plugins: [

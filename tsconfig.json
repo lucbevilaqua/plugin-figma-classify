@@ -19,8 +19,14 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@/*": [
+        "./src/*"
+      ],
       "@components/*": [
         "src/ui/components/*"
+      ],
+      "@lib/*": [
+        "src/ui/lib/*"
       ],
       "@containers/*": [
         "src/ui/containers/*"

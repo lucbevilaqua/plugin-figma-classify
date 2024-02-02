@@ -15,6 +15,6 @@ export function getPluginCollection() {
 
 export const showUIOptionsDefault: ShowUIOptions = { 
   themeColors: true,
-  height: 500,
-  width: 550,
+  height: 600,
+  width: 650,
 }

@@ -1,6 +1,5 @@
 
 export interface Config {
-  general: GeneralConfig
   custom?: Record<string, CustomConfig>
 }
 
@@ -11,8 +10,11 @@ export interface CustomConfig  {
   properties: ComponentProperties
 }
 
-export type ComponentProperties = Record<string, { type: ComponentPropertiesCodeType, mask?: string, code?: string }> 
+export interface ComponentProperty {
+  type: ComponentPropertiesCodeType,
+  values: Array<{ value: string, code: string}>
+}
 
-export type GeneralConfig  = Record<Exclude<ComponentPropertiesCodeType, 'code'>, string>
+export type ComponentProperties = Record<string, ComponentProperty> 
 
-export type ComponentPropertiesCodeType = 'property' | 'cssClass' | 'directive' | 'code'
+export type ComponentPropertiesCodeType = 'property' | 'cssClass' | 'directive'

@@ -1,105 +1,82 @@
-@import './components/table/styles.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-:root {
-  --ramp-grey-600: #444444;
-  --ramp-grey-700: #383838;
-  --elevation-500-modal-window: 0px 10px 24px rgba(0, 0, 0, .45), 0px 3px 5px rgba(0, 0, 0, .35), inset 0px 1px 0px rgba(255, 255, 255, .08), inset 0px 0px 1px rgba(255, 255, 255, .35);
-  --color-bg-secondary: var(--ramp-grey-700);
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
 }
 
-*,
-:not(button) {
-  color: var(--figma-color-text) !important;
-}
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-.header {
-  height: 5%;
-}
-
-.content {
-  height: calc(75% - 10px);
-  overflow-y: auto;
-}
-
-footer {
-  position: relative;
-  height: 10%;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top: 1px solid var(--ramp-grey-600, rgba(0, 0, 0, .1));
-  font-weight: 600;
-  padding: 8px 16px;
-  margin-right: -16px;
-  margin-left: -16px;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid var(--ramp-grey-600, rgba(0, 0, 0, .1));
-}
-
-.is-flex {
-  display: flex;
-}
-
-.separator {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom: 1px solid var(--ramp-grey-600, rgba(0, 0, 0, .1));
-  font-weight: 600;
-}
-
-.justify-end {
-  justify-content: end;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.gap-16 {
-  gap: 16px;
-}
-
-.plugin-container {
-  background-color: var(--figma-color-bg);
-  color: var(--figma-color-text);
-}
-
-.box-container {
-  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, .1));
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.select-menu>button {
-  background-color: var(--figma-color-bg) !important;
-  border: 1px solid var(--ramp-grey-600) !important;
-}
-
-.section-title {
-  padding: 0 !important;
-}
-
-ul,
-li {
-  padding: 0;
-}
-
-.close-button {
-  border: 1px solid transparent;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  width: 32px;
-  flex: 0 0 32px;
-  line-height: 32px;
-  cursor: pointer;
-  fill: var(--color-icon, #000);
-  color: var(--color-icon, #000);
-  border-radius: 2px;
-  background-clip: padding-box;
-  background-color: transparent;
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
