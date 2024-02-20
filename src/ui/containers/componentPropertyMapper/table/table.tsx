@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { PropertyType, TableProps } from "./types"
 
+import { Settings2 } from 'lucide-react';
+
 import {
   Table,
   TableBody,
@@ -68,7 +70,7 @@ const TableComponent = ({ component, onTypeChange, onInputValue }: TableProps) =
               <TableCell>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="truncate">{property.values.map(item => item.value).join(', ')}</Button>
+                    <Button variant="outline"><Settings2 /></Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-80">
                     <div className="grid gap-4">

@@ -7,10 +7,11 @@ import { ComponentProperties, CustomConfig } from "@typings/config";
 import TableComponent from "./table/table";
 import { PropertyType } from "./table/types";
 import { toCamelCase } from "@/utils";
+import CodeBlock from "@/ui/components/ui/codeblock";
 
 
 const getGenerateCodeComponentExemple = (component: CustomConfig): string => {
-  const prefix: string = 'app'
+  const prefix: string = 'exemple'
   const componentName = toCamelCase(component.name);
   const properties = component.properties;
 
@@ -81,6 +82,9 @@ const ComponentPropertyMapper = ({ component, onPropertiesChange }: ComponentPro
 
   return (
     <>
+      <p className="leading-7 [&:not(:first-child)]:my-6">Exemple Output.</p>
+      <CodeBlock value={codeExemple} />
+
       <div>
         <TableComponent
           component={component}
@@ -88,11 +92,6 @@ const ComponentPropertyMapper = ({ component, onPropertiesChange }: ComponentPro
           onInputValue={handleChangeValue}
         />
       </div>
-
-      <p className="leading-7 [&:not(:first-child)]:mt-6">Exemple Output.</p>
-      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-        {codeExemple}
-      </code>
     </>
   );
 };

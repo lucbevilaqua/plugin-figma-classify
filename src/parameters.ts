@@ -1,3 +1,4 @@
+import { handleSelectionChange } from './generate';
 import { getPluginCollection, showUIOptionsDefault } from './utils'
 
 const collection: VariableCollection = getPluginCollection();
@@ -27,6 +28,7 @@ export function startPluginWithParameters(parameters: ParameterValues) {
   collection.setPluginData('prefix', prefix);
   
   if (figma.editorType !== 'dev') {
-    figma.showUI(__html__, showUIOptionsDefault)
+    figma.showUI(__html__, showUIOptionsDefault);
+    handleSelectionChange()
   }
 }

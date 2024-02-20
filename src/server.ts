@@ -11,6 +11,7 @@ const mapMessages: Record<string, (msg: PluginMessage) => void> = {
   getAllComponents: handleGetAllComponents,
   setComponentFocus: handleSetComponentFocus,
   saveConfig: handleSaveConfig,
+  deleteComponentConfig: handleDeleteComponentConfig,
 }
 
 // Listeners
@@ -50,6 +51,16 @@ function handleSaveConfig(msg: PluginMessage) {
   collection.setPluginData('config', JSON.stringify(config))
 
   figma.notify(`Config to ${name} saved.`)
+}
+
+function handleDeleteComponentConfig(msg: PluginMessage) {
+  const name = msg.payload?.name ?? ''
+  delete config.custom![name]
+
+  collection.setPluginData('config', JSON.stringify(config))
+
+  figma.notify(`Config to ${name} reseted.`)
+  handleGetAllComponents({ action: 'getAllComponents' })
 }
 
 function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomConfig | null {

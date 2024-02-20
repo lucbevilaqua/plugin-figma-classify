@@ -4,21 +4,17 @@ import './styles.css'
 import { PluginMessage } from '@typings/pluginMessages';
 import { SetCustomConfigurationProps } from './types';
 import { CustomConfig, ComponentProperties } from '@typings/config';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/components/ui/card';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/ui/components/ui/command';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/ui/components/ui/card';
 import { Button } from '@/ui/components/ui/button';
-import { CheckIcon, SaveAllIcon } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/components/ui/popover';
-import { CaretSortIcon } from '@radix-ui/react-icons';
-import { cn } from '@/ui/lib/utils';
+import { RotateCcw, SaveAllIcon } from 'lucide-react';
 import ComponentPropertyMapper from '../../containers/componentPropertyMapper/componentPropertyMapper';
 import { Input } from '@/ui/components/ui/input';
 import { Label } from '@/ui/components/ui/label';
+import ComponentCombobox from './componentCombobox/componentCombobox';
 
 const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
   const [componentList, setComponentList] = useState<Array<any>>([]);
   const [component, setComponent] = useState<CustomConfig>({} as CustomConfig);
-  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     function handleComponentData(event: MessageEvent) {
@@ -38,9 +34,15 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
     parent.postMessage({ pluginMessage: { action: 'saveConfig', payload: component } }, '*');
   }
 
+  const handleReset = () => {
+    const componentName = component.name;
+    setComponent({} as CustomConfig);
+    parent.postMessage({ pluginMessage: { action: 'deleteComponentConfig', payload: component } }, '*');
+    setTimeout(() => setComponent(componentList.find((component) => component.name === componentName)));
+  }
+
   const handleComponentChange = (optionValue: string) => {
     setComponent(componentList.find((component) => component.name.toLowerCase() === optionValue.toLowerCase()))
-    setOpen(false)
     parent.postMessage({ pluginMessage: { action: 'setComponentFocus', payload: component.key } }, '*');
   }
 
@@ -61,41 +63,14 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Let's start configuring !</CardTitle>
-        <CardDescription>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="w-full justify-between"
-              >
-                {component.name ? component.name : 'Enter the name of the component or instance...'}
-                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search framework..." className="h-9" />
-                <CommandEmpty>No framework found.</CommandEmpty>
-                <CommandGroup>
-                  {componentList.map((co) => (
-                    <CommandItem key={co.key} value={co.name} onSelect={handleComponentChange}>
-                      <span>{co.name}</span>
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          component.name === co.name ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </CardDescription>
+        <CardTitle className="flex items-center justify-between">
+          Let's start configuring !
+          <ComponentCombobox
+            list={componentList}
+            value={component.name}
+            onChange={handleComponentChange}
+          />
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         {component.properties &&
@@ -119,12 +94,21 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
           </>
         }
       </CardContent>
-      <CardFooter>
+      <CardFooter className='flex gap-2'>
         <Button
           onClick={handleSave}
+          disabled={!component.name}
         >
           <SaveAllIcon size={24} className="mr-2 h-4 w-4" />
-          Salvar
+          Save
+        </Button>
+        <Button
+          onClick={handleReset}
+          variant='destructive'
+          disabled={!component.name}
+        >
+          <RotateCcw size={24} className="mr-2 h-4 w-4" />
+          Reset
         </Button>
       </CardFooter>
     </Card>
