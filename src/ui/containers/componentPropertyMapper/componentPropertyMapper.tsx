@@ -8,7 +8,7 @@ import TableComponent from "./table/table";
 import { PropertyType } from "./table/types";
 import { toCamelCase } from "@/utils";
 import CodeBlock from "@/ui/components/ui/codeblock";
-
+import { ScrollArea } from "@/ui/components/ui/scroll-area";
 
 const getGenerateCodeComponentExemple = (component: CustomConfig): string => {
   const prefix: string = 'exemple'
@@ -82,16 +82,17 @@ const ComponentPropertyMapper = ({ component, onPropertiesChange }: ComponentPro
 
   return (
     <>
-      <p className="leading-7 [&:not(:first-child)]:my-6">Exemple Output.</p>
-      <CodeBlock value={codeExemple} />
-
-      <div>
+      <ScrollArea className="h-[300px] w-auto rounded-md border p-4">
+        <p className="leading-7 [&:not(:first-child)]:mt-6">Below are all the properties created for this component, let's map them to generate the most appropriate code. If necessary, call a member of your engineering team.</p>
         <TableComponent
           component={component}
           onTypeChange={handleTypeChange}
           onInputValue={handleChangeValue}
         />
-      </div>
+      </ScrollArea>
+
+      <p className="leading-7 [&:not(:first-child)]:my-6">Exemple Output.</p>
+      <CodeBlock value={codeExemple} />
     </>
   );
 };
