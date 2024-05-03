@@ -25,6 +25,10 @@ export function toCamelCase(str: string) {
       .replace(/\s+/g, '');
 }
 
+export function isTextNode(node: any): node is TextNode {
+  return node && typeof node.characters === 'string';
+}
+
 export const showUIOptionsDefault: ShowUIOptions = { 
   themeColors: true,
   height: 600,

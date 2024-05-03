@@ -1,14 +1,13 @@
-import { getPluginCollection } from '@src/utils';
-import { Config, CustomConfig } from '@typings/config';
-import { FigmaComponentProperties, FigmaToCodeResponse } from '@typings/figma';
+import { isTextNode } from '@src/utils';
+import { CustomConfig } from '@typings/config';
+import { ChildrenTextNode, FigmaComponentProperties, FigmaToCodeResponse } from '@typings/figma';
+import { collection, getConfig } from './main';
 
 const configDefault = {
   cssClass: '$prefix-$value',
   directive: 'is$value',
   property: '$propertyName="$value"'
 }
-const collection: VariableCollection = getPluginCollection();
-const config: Config = JSON.parse(collection.getPluginData('config') || JSON.stringify({ custom: {} }));
 let selection: SceneNode = figma.currentPage.selection[0];
 
 // Handlers
@@ -46,21 +45,40 @@ export function figmaToCode(): FigmaToCodeResponse | null {
     return code;
   }
 
+  const config = getConfig();
+  
   if(config.custom?.[selection.name]) {
     code = mapConfiguredFigmaComponentToHTML(selection.name, selection.variantProperties ?? {})
   } else {
     code = mapDefaultFigmaComponentToHTML(selection.name, selection.variantProperties ?? {})
   }
 
-  const response: FigmaToCodeResponse = { tag: code, fills: selection.fills, absoluteBoundingBox: selection.absoluteBoundingBox, children: [ ...selection.children] }
+  const response: FigmaToCodeResponse = { 
+    tag: code,
+    fills: selection.fills,
+    absoluteBoundingBox: selection.absoluteBoundingBox,
+    children: mapChildren(selection.children.filter(isTextNode) as Array<TextNode>),
+  }
 
   return response;
+}
+
+function mapChildren(children: Array<TextNode>): Array<ChildrenTextNode> {
+  const childrenMapped = children.map((children) => {
+    return {
+      characters: children.characters,
+      fills: children.fills,
+      absoluteBoundingBox: children.absoluteBoundingBox
+    };
+  });
+
+  return childrenMapped;
 }
 
 function mapConfiguredFigmaComponentToHTML(componentName: string, componentProperties: FigmaComponentProperties): string {
   const prefix: string = collection.getPluginData('prefix')
 
-  const customConfig: CustomConfig = config.custom![componentName]
+  const customConfig: CustomConfig = getConfig().custom![componentName]
 
   const properties = customConfig.properties
   let attributes = '';

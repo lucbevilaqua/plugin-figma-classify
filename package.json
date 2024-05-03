@@ -17,6 +17,7 @@
     "@types/react-syntax-highlighter": "^15.5.11",
     "autoprefixer": "^10.4.17",
     "css-loader": "^6.8.1",
+    "dotenv": "^16.4.5",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^5.5.4",
     "react": "^18.2.0",

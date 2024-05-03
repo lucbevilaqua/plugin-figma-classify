@@ -5,6 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 
 import { cn } from '@/ui/lib/utils';
 import { Button } from '@/ui/components/ui/button';
+import { ScrollArea } from '@/ui/components/ui/scroll-area';
 
 interface ComponentComboboxProps {
   value: string;
@@ -34,23 +35,25 @@ const ComponentCombobox = ({ value, onChange, list }: ComponentComboboxProps) =>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
-        <Command>
-          <CommandInput placeholder="Search components..." />
-          <CommandEmpty>No component found.</CommandEmpty>
-          <CommandGroup>
-            {list.map((co) => (
-              <CommandItem key={co.key} value={co.name} onSelect={handleComponentChange}>
-                <span>{co.name}</span>
-                <CheckIcon
-                  className={cn(
-                    "ml-auto h-4 w-4",
-                    value === co.name ? "opacity-100" : "opacity-0"
-                  )}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
+        <ScrollArea className="h-72 w-48 rounded-md border">
+          <Command>
+            <CommandInput placeholder="Search components..." />
+            <CommandEmpty>No component found.</CommandEmpty>
+            <CommandGroup>
+              {list.map((co) => (
+                <CommandItem key={co.key} value={co.name} onSelect={handleComponentChange}>
+                  <span>{co.name}</span>
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      value === co.name ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </Command>
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );

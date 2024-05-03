@@ -2,6 +2,10 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const path = require('path');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+const enviroment = dotenv.config().parsed;
 
 module.exports = (env, argv) => ({
   mode: argv.mode === 'production' ? 'production' : 'development',
@@ -47,6 +51,10 @@ module.exports = (env, argv) => ({
     plugins: [new TsconfigPathsPlugin({})]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.OPENAI_TOKEN': JSON.stringify(enviroment.OPENAI_TOKEN),
+      'process.env.OPENAI_FIGMA_TO_CODE_PROMPT': JSON.stringify(enviroment.OPENAI_FIGMA_TO_CODE_PROMPT),
+    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       template: './src/ui/ui.html',
