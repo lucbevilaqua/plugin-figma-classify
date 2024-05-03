@@ -5,7 +5,7 @@ export type PluginCommands = 'startOnboarding' |
   'selectionChange' |
   'setComponentFocus'
 
-export interface PluginMessage {
+export interface PluginMessage<T = any> {
   action: PluginCommands
-  payload?: any
+  payload?: T
 }

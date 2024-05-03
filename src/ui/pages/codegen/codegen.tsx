@@ -6,15 +6,17 @@ import { CodegenProps } from './types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/ui/card';
 import CodeBlock from '@/ui/components/ui/codeblock';
 import { Alert, AlertDescription, AlertTitle } from '@/ui/components/ui/alert';
+import { FigmaToCodeResponse } from '@typings/figma';
 
 const Codegen = ({ }: CodegenProps) => {
   const [code, setCode] = useState<string>('');
 
   useEffect(() => {
     function handleComponentData(event: MessageEvent) {
-      const msg = event.data.pluginMessage as PluginMessage;
-      if (msg.action === 'selectionChange') {
-        setCode(msg.payload.code)
+      const { action, payload } = event.data.pluginMessage as PluginMessage<FigmaToCodeResponse>;
+
+      if (action === 'selectionChange' && payload?.tag) {
+        setCode(payload?.tag)
       }
     }
 
