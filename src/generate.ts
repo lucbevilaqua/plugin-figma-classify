@@ -1,44 +1,43 @@
-import { getPluginCollection } from '@src/utils';
-import { Config, CustomConfig } from '@typings/config';
-import { FigmaComponentProperties } from '@typings/figma';
+import { isTextNode } from '@src/utils';
+import { CustomConfig } from '@typings/config';
+import { ChildrenTextNode, FigmaComponentProperties, FigmaToCodeResponse } from '@typings/figma';
+import { collection, getConfig } from './main';
 
 const configDefault = {
   cssClass: '$prefix-$value',
   directive: 'is$value',
   property: '$propertyName="$value"'
 }
-const collection: VariableCollection = getPluginCollection();
-const config: Config = JSON.parse(collection.getPluginData('config') || JSON.stringify({ custom: {} }));
 let selection: SceneNode = figma.currentPage.selection[0];
 
 // Handlers
 export const handleSelectionChange = () => {
   if (figma.editorType !== 'dev') {
-    figma.ui.postMessage({ action: 'selectionChange', payload: { code: getCodegen()} })
+    figma.ui.postMessage({ action: 'selectionChange', payload: figmaToCode() })
     return;
   } 
   
-  handleGenerateCodeSession()
+  handleGenerateCodeFigmaSession()
 }
 
-const handleGenerateCodeSession = (): CodegenResult[] => {
+const handleGenerateCodeFigmaSession = (): CodegenResult[] => {
   const codegenResult: Array<CodegenResult> = []
-  const code = getCodegen()
+  const code = figmaToCode() ?? { tag: null }
 
-  if(code === null) {
+  if(code.tag === null) {
     return []
   }
 
   codegenResult.push({
     language: 'HTML',
-    code,
+    code: code.tag,
     title: 'Component Exemple'
   })
 
   return codegenResult;
 }
 
-export function getCodegen(): string | null {
+export function figmaToCode(): FigmaToCodeResponse | null {
   selection = figma.currentPage.selection[0]
   let code = null;
 
@@ -46,19 +45,40 @@ export function getCodegen(): string | null {
     return code;
   }
 
+  const config = getConfig();
+  
   if(config.custom?.[selection.name]) {
-    code = handleGenerateCodeComponent(selection.name, selection.variantProperties ?? {})
+    code = mapConfiguredFigmaComponentToHTML(selection.name, selection.variantProperties ?? {})
   } else {
-    code = handleGenerateCodeFromFigma(selection.name, selection.variantProperties ?? {})
+    code = mapDefaultFigmaComponentToHTML(selection.name, selection.variantProperties ?? {})
   }
 
-  return code;
+  const response: FigmaToCodeResponse = { 
+    tag: code,
+    fills: selection.fills,
+    absoluteBoundingBox: selection.absoluteBoundingBox,
+    children: mapChildren(selection.children.filter(isTextNode) as Array<TextNode>),
+  }
+
+  return response;
 }
 
-function handleGenerateCodeComponent(componentName: string, componentProperties: FigmaComponentProperties): string | null {
+function mapChildren(children: Array<TextNode>): Array<ChildrenTextNode> {
+  const childrenMapped = children.map((children) => {
+    return {
+      characters: children.characters,
+      fills: children.fills,
+      absoluteBoundingBox: children.absoluteBoundingBox
+    };
+  });
+
+  return childrenMapped;
+}
+
+function mapConfiguredFigmaComponentToHTML(componentName: string, componentProperties: FigmaComponentProperties): string {
   const prefix: string = collection.getPluginData('prefix')
 
-  const customConfig: CustomConfig = config.custom![componentName]
+  const customConfig: CustomConfig = getConfig().custom![componentName]
 
   const properties = customConfig.properties
   let attributes = '';
@@ -90,7 +110,7 @@ function handleGenerateCodeComponent(componentName: string, componentProperties:
   return`<${componentTag} ${classCss && `class="${classCss.trimStart()}"`}${attributes}></${componentTag}>`;
 }
 
-function handleGenerateCodeFromFigma(componentName: string, componentProperties: FigmaComponentProperties): string | null {
+function mapDefaultFigmaComponentToHTML(componentName: string, componentProperties: FigmaComponentProperties): string | null {
   const prefix: string = collection.getPluginData('prefix') ?? 'app'
   const tagName = prefix ? `${prefix}-${componentName}` : componentName;
   let attributes = '';
@@ -112,5 +132,5 @@ function handleGenerateCodeFromFigma(componentName: string, componentProperties:
 };
 
 // Listeners
-figma.codegen.on("generate", () => handleGenerateCodeSession());
+figma.codegen.on("generate", () => handleGenerateCodeFigmaSession());
 figma.on("selectionchange", handleSelectionChange);

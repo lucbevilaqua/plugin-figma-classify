@@ -1,11 +1,10 @@
 import { Config, CustomConfig } from "@typings/config";
-import { getPluginCollection, toCamelCase } from "./utils";
+import { toCamelCase } from "./utils";
 import { PluginMessage } from '@typings/pluginMessages'
+import { collection, getConfig } from "./main";
 
-const collection: VariableCollection = getPluginCollection();
 const components = figma.currentPage.findAll(node => node.type === 'COMPONENT_SET') as Array<ComponentSetNode>;
 const instances = figma.currentPage.findAll(node => node.type === 'INSTANCE') as Array<InstanceNode>;
-let config: Config = JSON.parse(collection.getPluginData('config') || '{}')
 
 const mapMessages: Record<string, (msg: PluginMessage) => void> = {
   getAllComponents: handleGetAllComponents,
@@ -47,14 +46,15 @@ function handleSetComponentFocus(msg: PluginMessage) {
 
 function handleSaveConfig(msg: PluginMessage) {
   const name = msg.payload?.name ?? ''
+  const config = getConfig();
   config.custom = { ...config.custom, [name]: msg.payload}
   collection.setPluginData('config', JSON.stringify(config))
-
   figma.notify(`Config to ${name} saved.`)
 }
 
 function handleDeleteComponentConfig(msg: PluginMessage) {
   const name = msg.payload?.name ?? ''
+  const config = getConfig();
   delete config.custom![name]
 
   collection.setPluginData('config', JSON.stringify(config))
@@ -64,6 +64,7 @@ function handleDeleteComponentConfig(msg: PluginMessage) {
 }
 
 function mapFigmaComponentToCustomConfig(component: ComponentSetNode): CustomConfig | null {
+  const config = getConfig();
   let properties: Record<string, any> = {};
   const name = toCamelCase(component.name);
   let tag = `$prefix-${name}`;

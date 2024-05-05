@@ -53,8 +53,7 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
     }));
   };
 
-  const handleComponentTageChange = (data: any) => {
-    const value = data.componentTag
+  const handleComponentTagChange = (value: string) => {
     setComponent(prevMappings => ({
       ...prevMappings,
       tag: value
@@ -71,7 +70,7 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
           Select a component from the list to begin configuring the code that will be generated.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2 flex flex-col space-y-4">
+      <CardContent className="flex flex-col space-y-4">
         <div className='space-y-2'>
           <Label className='min-w-32 flex items-center'>
             <ComponentIcon className="h-4 w-4 mr-2" />
@@ -93,7 +92,7 @@ const CustomConfiguration = ({ }: SetCustomConfigurationProps) => {
               <Input
                 id='componentTag'
                 defaultValue={component.tag ?? component.name}
-                onInput={(event) => handleComponentTageChange(event.currentTarget.value)}
+                onInput={(event) => handleComponentTagChange(event.currentTarget.value)}
                 className="h-8"
               />
               <p className='text-[0.8rem] text-muted-foreground'>This will be a tag for your component. Examples: span, $componentName, $prefix-$componentName, p.</p>

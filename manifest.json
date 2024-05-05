@@ -43,7 +43,8 @@
     ],
     "allowedDomains": [
       "https://cdn.jsdelivr.net",
-      "https://rsms.me"
+      "https://rsms.me",
+      "https://api.openai.com"
     ]
   }
 }
